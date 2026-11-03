@@ -1,0 +1,5 @@
+name: "ex_skill"
+title: "ex-skill（前任 Skill）"
+description: "Organize shared memories and chats with an ex into a relationship-memory skill that can talk in a familiar style, with a let-go delete command, adapted from therealXiaomanChu/ex-skill."
+category: "People and personas"
+include_in_prompt: false

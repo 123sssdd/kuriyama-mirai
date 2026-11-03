@@ -1,0 +1,5 @@
+name: "supervisor_skill"
+title: "supervisor（导师 Skill）"
+description: "Build a research profile of an academic supervisor or mentor from papers and interviews to discuss papers, experiment design and research direction, adapted from ybq22/supervisor."
+category: "People and personas"
+include_in_prompt: false

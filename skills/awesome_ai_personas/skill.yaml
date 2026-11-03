@@ -1,0 +1,5 @@
+name: "awesome_ai_personas"
+title: "awesome-ai-personas（人物技能合集）"
+description: "Index of person-distillation skills (colleague, boss, ex, crush, self, parents, supervisor, senpai and more) for finding and comparing the right one, adapted from mailbus/awesome-ai-personas."
+category: "People and personas"
+include_in_prompt: false

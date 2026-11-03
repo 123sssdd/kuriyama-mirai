@@ -11,12 +11,11 @@
 - `persona.md`：助理的人设说明（栗山未来的人物特征和说话方式）。
 - `soul.md`：助理的灵魂文件，含与 Jacob 相处的核心心法（结论先行、不清楚就追问、主动记偏好、每晚自审同步等）。
 - `user.md`：Jacob 的基本信息。
-- `skills/`：五个已装好的 skill，每个都是 SKILL.md 加 skill.yaml：
-  - `grill_me`：需求不清楚时连续追问，把细节和边界问清。
-  - `grill_with_docs`：已有方案时对照项目文档找遗漏，和 grill_me 共用追问引擎。
-  - `find_skills`：做新任务前先找现成技能，核过质量再装。
-  - `brainstorming`：动手前把模糊想法变成设计方案。
-  - `satori`：反思型对话伙伴，融多家智慧传统；轻用法是聊天中偶尔一句有哲理的话。
+- `skills/`：31 个已装好的 skill，每个都是 SKILL.md 加 skill.yaml，按组列：
+  - 工程组：`find_skills`（先找现成技能）、`grill_me`（需求不清时追问）、`grill_with_docs`（对照文档找遗漏）、`brainstorming`（想法变设计）、`improve_codebase_architecture`（架构深化报告）、`setup_matt_pocock_skills`（仓库配置）、`superpowers`（计划、TDD、调试、评审的工作法组）、`emilkowalski_skills`（动画与设计工程）、`hyperframes` 与 `hyperframes_cli`（HTML 转视频）、`self_evolution`（触发词【启动自进化模式】的整理同步流程）。
+  - 人物蒸馏组：`distilly`（同事）、`boss_skills`（老板）、`ex_skill`（前任）、`crush_skills`（暗恋）、`yourself_skill`（自己）、`parents_skills`（父母）、`supervisor_skill`（导师）、`senpai_skill`（师兄）、`awesome_ai_personas`（合集导航）。
+  - 自我认知组（等 Jacob 开口才用、只陪聊不诊断）：`satori`、`life_designer`、`self_interview_21day`、`interrogation_partner`、`carl_jung_skill`、`evolution_skills`。
+  - 视觉组：`diagram_design`（图表，不需 key）、`xiaohei_illustrations`（小黑手绘配图）、`baoyu_infographic`（完整信息图）、`smart_illustrator`（文章自动配图）、`infographic_agent`（研究到制图一条线）。
 
 ## 其他 AI 接手时的阅读顺序
 

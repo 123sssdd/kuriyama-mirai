@@ -1,0 +1,5 @@
+name: "diagram_design"
+title: "diagram-design（图表设计）"
+description: "Draw flowcharts, architecture diagrams, sequence diagrams, dependency graphs and 40+ diagram types as a single HTML file with inline SVG, exportable to PNG, no API key needed, adapted from cathrynlavery/diagram-design."
+category: "Visual and diagrams"
+include_in_prompt: false

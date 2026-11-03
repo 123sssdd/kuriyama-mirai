@@ -1,0 +1,5 @@
+name: "hyperframes_cli"
+title: "hyperframes-cli（HyperFrames 命令行）"
+description: "The HyperFrames CLI dev loop via npx hyperframes: init, lint, check, snapshot, preview, render, publish and doctor, including cloud and Lambda rendering notes, adapted from heygen-com/hyperframes."
+category: "Engineering and media"
+include_in_prompt: false

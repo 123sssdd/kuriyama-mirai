@@ -1,0 +1,5 @@
+name: "baoyu_infographic"
+title: "baoyu-infographic（宝玉信息图）"
+description: "Generate complete infographics with 21 layouts and 22 styles, auto-recommending the layout-style combination from the content, adapted from JimLiu/baoyu-skills."
+category: "Visual and diagrams"
+include_in_prompt: false

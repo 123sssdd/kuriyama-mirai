@@ -1,0 +1,5 @@
+name: "smart_illustrator"
+title: "smart-illustrator（智能配图）"
+description: "Read an article, choose 3 to 5 illustration spots automatically, and route each to Gemini, Excalidraw or Mermaid by content; also makes PPT infographics and covers. Needs GEMINI_API_KEY or prompt-only mode, adapted from sss-hust/skills."
+category: "Visual and diagrams"
+include_in_prompt: false

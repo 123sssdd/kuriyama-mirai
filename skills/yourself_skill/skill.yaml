@@ -1,0 +1,5 @@
+name: "yourself_skill"
+title: "yourself-skill（自己 Skill）"
+description: "Distill the user's own diaries, notes and past choices into a self portrait so he can chat with his recorded self and see how his thinking changed, adapted from notdog1998/yourself-skill."
+category: "People and personas"
+include_in_prompt: false

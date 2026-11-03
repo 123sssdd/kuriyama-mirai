@@ -1,0 +1,5 @@
+name: "distilly"
+title: "distilly（同事 Skill）"
+description: "Distill a colleague's chats, work docs and decisions into a reusable two-layer skill (Work Skill plus Persona) for handover, knowledge retention and onboarding, adapted from titanwings/distilly."
+category: "People and personas"
+include_in_prompt: false

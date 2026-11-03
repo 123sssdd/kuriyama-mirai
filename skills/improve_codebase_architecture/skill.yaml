@@ -1,0 +1,5 @@
+name: "improve_codebase_architecture"
+title: "improve-codebase-architecture（代码库架构深化）"
+description: "Scan a codebase for deepening opportunities that turn shallow modules into deep ones, present a visual HTML report, then grill through the chosen one, adapted from mattpocock/skills."
+category: "Engineering and media"
+include_in_prompt: false

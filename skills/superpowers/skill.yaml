@@ -1,0 +1,5 @@
+name: "superpowers"
+title: "Superpowers（工程工作法技能组）"
+description: "The obra/superpowers engineering method set as one merged skill: writing and executing plans, TDD, systematic debugging, code review both ways, git worktrees, parallel subagents and verification before completion. Brainstorming from the same repo stays as its own installed skill."
+category: "Engineering and media"
+include_in_prompt: false

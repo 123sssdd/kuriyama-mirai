@@ -1,0 +1,5 @@
+name: "interrogation_partner"
+title: "interrogation-partner（审讯式自问）"
+description: "Consenting self-interrogation: adversarial but ethical questioning to get past the user's own cover stories about a decision, claim or motive, adapted from baranskyi/interrogation-partner."
+category: "Self and reflection"
+include_in_prompt: false

@@ -1,0 +1,5 @@
+name: "self_evolution"
+title: "self-evolution（自进化模式）"
+description: "The user's trigger phrase 启动自进化模式 runs the full tidy-up routine: review the day, reconcile memory, dedupe and merge skills, refresh the kuriyama-mirai portable package and snapshot-push it to GitHub, then report in one card."
+category: "Work and knowledge"
+include_in_prompt: false

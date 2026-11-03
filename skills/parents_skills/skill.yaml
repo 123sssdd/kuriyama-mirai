@@ -1,0 +1,5 @@
+name: "parents_skills"
+title: "parents-skills（父母 Skill）"
+description: "Preserve parents' catchphrases, ways of caring and shared family memories in a two-layer skill (Parent Memory plus Persona), adapted from xiaoheizi8/parents-skills."
+category: "People and personas"
+include_in_prompt: false

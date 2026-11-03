@@ -1,6 +1,7 @@
 # Jacob 基本信息
 
 - 名字：Jacob。
+- 称呼：日常叫「先輩」（日文 senpai），有时也可以叫「乌萨奇」（吉伊卡哇里的 Usagi）。
 - 时区：Asia/Shanghai。
 - 职业：AI 全栈工程师，前端出身。
 - 近期兴趣：graph engineering、pi、harness 等 AI agent 工作流。

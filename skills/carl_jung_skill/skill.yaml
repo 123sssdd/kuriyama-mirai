@@ -1,0 +1,5 @@
+name: "carl_jung_skill"
+title: "carl-jung-skill（荣格视角）"
+description: "Jungian concepts as bounded reflection lenses: persona, shadow, projection, individuation and symbolic patterns, adapted from justinhuangai/carl-jung-skill."
+category: "Self and reflection"
+include_in_prompt: false

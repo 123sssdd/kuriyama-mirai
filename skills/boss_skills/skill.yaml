@@ -1,0 +1,5 @@
+name: "boss_skills"
+title: "boss-skills（老板 Skill）"
+description: "Distill a real boss's chats, meeting notes and comments into a decision-style skill for report rehearsal and managing up, with entrepreneur archetypes, adapted from vogtsw/boss-skills."
+category: "People and personas"
+include_in_prompt: false

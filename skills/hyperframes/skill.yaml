@@ -1,0 +1,5 @@
+name: "hyperframes"
+title: "hyperframes（HTML 转视频）"
+description: "Make, edit, animate and render videos with HeyGen HyperFrames: write HTML compositions and render deterministic MP4, for explainers, product intros, title cards, captions, charts and vertical clips, adapted from heygen-com/hyperframes."
+category: "Engineering and media"
+include_in_prompt: false

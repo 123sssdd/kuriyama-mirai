@@ -1,0 +1,5 @@
+name: "evolution_skills"
+title: "evolution-skills（思维进化技能组）"
+description: "Eleven thinking methods as one merged skill: socratic, steelman, first-principles, deconstruct, fact-check, min-experiment, hidden-talents, life-design, cross-domain, two-axis-research and two-layer-explain, adapted from coolTheWorld/evolution-skills."
+category: "Self and reflection"
+include_in_prompt: false

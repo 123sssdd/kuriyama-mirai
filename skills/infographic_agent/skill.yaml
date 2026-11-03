@@ -1,0 +1,5 @@
+name: "infographic_agent"
+title: "infographic-agent（信息图 Agent）"
+description: "A research-to-infographic pipeline: research, planning and drawing in one CLI flow that generates an infographic directly. Needs GEMINI_API_KEY, adapted from ryanbaumann/infographic-agent."
+category: "Visual and diagrams"
+include_in_prompt: false

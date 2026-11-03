@@ -1,0 +1,5 @@
+name: "setup_matt_pocock_skills"
+title: "setup-matt-pocock-skills（工程技能仓库配置）"
+description: "One-time per-repo setup for the Matt Pocock engineering skills: issue tracker choice, triage label vocabulary, and domain doc layout (GLOSSARY and ADRs), adapted from mattpocock/skills."
+category: "Engineering and media"
+include_in_prompt: false
