@@ -1,0 +1,5 @@
+name: "brainstorming"
+title: "Brainstorming"
+description: "Turn a fuzzy idea into an approved design before anything gets built, by exploring intent one question at a time, laying out two or three approaches with trade-offs, and writing a short or full design doc."
+category: "Work and knowledge"
+include_in_prompt: false

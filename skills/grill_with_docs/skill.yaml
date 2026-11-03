@@ -1,0 +1,5 @@
+name: "grill_with_docs"
+title: "grill-with-docs"
+description: "Pressure-test an existing plan against the project's current documents and files to find omissions, running the grill-me interview and recording resolved terms and decisions as it goes."
+category: "Work and knowledge"
+include_in_prompt: false

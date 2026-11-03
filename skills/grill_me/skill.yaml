@@ -1,0 +1,5 @@
+name: "grill_me"
+title: "grill-me"
+description: "Sharpen a fuzzy idea, plan or decision by interviewing the user one frontier of questions at a time, each with a recommended answer, whenever requirements or boundaries are unclear."
+category: "Work and knowledge"
+include_in_prompt: false
