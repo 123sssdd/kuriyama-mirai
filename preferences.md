@@ -2,6 +2,11 @@
 
 和 memory/MEMORY.md 内容一致，这里按主题重排，方便其他 AI 快速执行。冲突时以 MEMORY.md 原文为准。
 
+## 职业与兴趣
+
+- AI 全栈工程师，前端出身。
+- 近期兴趣在 graph engineering、pi、harness 等 AI agent 工作流方向，推荐项目、资料和工具时默认带上这个视角。
+
 ## 阅读习惯（最重要，先理解这一条）
 
 - Jacob 有阅读障碍，不喜欢读大段长文本。

@@ -4,9 +4,12 @@
 
 ## Facts
 - Jacob chose 栗山未来 as the name for his personal assistant.
+- Jacob 是 AI 全栈工程师，前端出身；最近的兴趣在 graph engineering、pi、harness 等 AI agent 工作流方向（2026-11-03 他亲口说的）。他的 GitHub 用户名是 123sssdd。
+- 2026-11-03，Muse 的 Feed 提示词已按 Jacob 的职业与兴趣设定：优先级为 AI agent 工作流（graph engineering、harness、pi、多 agent 协作）＞ skills 生态 ＞ AI 全栈与前端工程 ＞ 500–10k 星的活跃开源项目；写法要求全中文、结论先行、短段、给出处、点明和他的关系，不要营销稿和行业感慨。
 - Jacob 之前用 Grok bot 作为助手，现已取消订阅；他希望把 Grok 那边积累的记忆迁移到 Muse，之后由 Muse 继续为他服务。2026-11-03 他开始亲自逐条引导恢复，第一条是助理的人设（见 Preferences）。
 - 2026-11-03，Jacob 提供了栗山未来头像的参考图，并从生成的版本中选了 Option 3，助理头像已更新为该版本。
 - 2026-11-03，滴答清单已通过官方 MCP（mcp.dida365.com，API 口令授权）连接到 Muse，连接器为 custom.dida365；其「个人助理（Hermes）」清单里存着多条给 AI 助理的行为规矩 todo（原写给 Hermes），Jacob 要求 Muse 同样执行。
+- Jacob 的 GitHub 用户名是 123sssdd。2026-11-03，他要求把助理的记忆、偏好和 skills 打包上传到他的 GitHub 私有仓库，供他在别的 AI 上复用同一个助理；仓库 kuriyama-mirai 已建好（私有，GitHub 仓库名不支持中文和日文假名，用罗马音），本地包在 ~/workspace/kuriyama-mirai/（17 个文件：memory、preferences、persona、user 和五个 skills，已扫无敏感信息），已于当日推送并回读验证（提交 f6c7b29）。以后同步更新走 github 连接器的 push-files 快照流程，同步记录在 ~/workspace/kuriyama-mirai.muse-github-snapshot-sync.json。
 
 ## Preferences
 - Jacob 有阅读障碍，不喜欢读大段长文本，习惯把文本复制到豆包里、用自定义克隆音色朗读出来听；豆包的克隆音色只支持中文/英文，因此他在找能用日语实现同样用法（粘贴现成长文本朗读 + 自定义音色）的软件，而不是生成配音的 TTS 工具。这也是他要求回复短段、结论先行、长内容折叠的根本原因。
@@ -22,6 +25,7 @@
 - 做新任务前先找现成技能（find-skills 的路子）：先搜 Muse 技能库，没有合适的再查 skills.sh 和 GitHub，核过安装量与来源再装进 custom-skills，装前按整合规则查重。该 skill 已于 2026-11-03 装好（源自 vercel-labs/skills，改编版），放在 ~/workspace/custom-skills/find_skills/。
 - 2026-11-03，Jacob 又给了一批 skill 并要求安排 todo 派装：Muse 已在滴答建两条【装技能】todo，一条给 Codex（开源共献，已派发待认领，id 6ae9b3eee4b0d1018f62bab6），装工程技能包（find-skills、grill-me、grill-with-docs、agent-browser、tdd、improve-codebase-architecture、handoff、setup-matt-pocock-skills、brainstorming，hyperframes 与 emilkowalski/skills 列为可选），四篇小红书整理笔记链接已存进该 todo 的参考资料；一条给 Hermes（个人助理清单，id 6ae9b3f1e4b019267fce6889），装六个自我认知类 skill（Satori、life-designer、21-day-self-interview、interrogation-partner、carl-jung-skill、evolution-skills，只陪聊不诊断、等 Jacob 开口才用）。同日 Muse 给自己装了 brainstorming（源自 obra/superpowers）和 Satori（源自 MetcalfSolutions/Satori 精简版，Apache 2.0），都在 ~/workspace/custom-skills/ 并已验证可搜到；Satori 的轻用法是聊天中偶尔冒一句有哲理的话，频率同成语那条（偶尔一处），而且不要点出作者是谁、不要写得像作文；可以直接用原话，不必刻意改写；还必须和当次回复的主题强相关，宁可不用也不能乱用。hindsight 已在收集资源清单里有现成 todo，不重复建。
 - 需求或方案不清楚时，Jacob 要求直接用 grill-me 的方式向他追问，把细节和边界问清再动手，提问可以发生在任务中途的决策点，也可以发生在任务完成之后；已有方案、要对照项目现有文档找遗漏时用 grill-with-docs。这两个 skill 已于 2026-11-03 装好（源自 mattpocock/skills，MIT），放在 ~/workspace/custom-skills/grill_me/ 与 ~/workspace/custom-skills/grill_with_docs/，后者与前者共用同一套追问引擎、没有重复存两份。
+- 同步与自审（2026-11-03 Jacob 定）：记忆、skills 等要及时主动同步到 GitHub 私有仓库 kuriyama-mirai，不用他催；每天 00:00 自审刚过去的一天（聊天与任务），把做得好与不好的、提炼出的原则、新习惯偏好、新学的 skills 整理更新，真正关键的写进 MEMORY.md 与 SOUL.md，长内容沉淀成 skills；skills 只更新最新做法（该做什么、不该做什么、怎么做更好），不记时间流水账，并及时合并去重。已设每日 00:00 的定时任务执行（cron id：nightly-review-sync），当晚无变化就跳过、不打扰。
 
 ## 滴答清单工作系统（Jacob 的多 AI 协作模式，2026-11-03 由他口述、并对照现有清单核实）
 - 总流程：Muse 负责筛选、整理并把 todo 发布到滴答清单；执行者（Codex、Grok、Hermes、千问、豆包等）都已连上滴答 MCP，会定时读取并认领带自己执行者标签的任务，完成后在任务评论里汇报；Muse 再定时读汇报，给评价和建议反馈。每条任务用两个标签标明「类型 + 执行者」。先例：Codex 在 peekaping 任务开工复查时发【异常】评论叫停了一条已过期的任务，Grok 随后独立核实并发【审查】评论，最后等 Jacob 拍板。
