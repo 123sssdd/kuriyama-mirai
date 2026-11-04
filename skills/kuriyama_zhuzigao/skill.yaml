@@ -1,0 +1,5 @@
+name: "kuriyama_zhuzigao"
+title: "栗山未来·逐字稿"
+description: "Turn a multi-round discussion with the user into a clean document (interview Q&A script, blog material, review notes): first collect his verbatim messages as a raw-material list, then build answers only from his final endorsed restatements, add Muse's points only as marked supplements, and for questions he accepted without restating, write Muse's answer in his style front-marked."
+category: "Work and knowledge"
+include_in_prompt: false

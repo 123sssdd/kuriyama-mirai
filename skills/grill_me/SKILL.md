@@ -43,3 +43,7 @@ Vendored from Matt Pocock's skills collection (MIT License, Copyright (c) 2026 M
 - Use `muse.connector_search` to find other connectors and `muse.skill_search` to find related skills.
 
 - If nothing here fits, look on the web for a maintained API or MCP server and set it up with [Custom Connectors and MCPs](/opt/muse/skills/custom-connector-setup/SKILL.md), or build a custom connector.
+
+## 提问表单（呈现方式）
+
+grill-me 需要他逐条点选确认时，用生成式 HTML 表单呈现，模板在 ~/workspace/表单模板/grill-me提问表单.html（只给 grill-me 用）：改 QUESTIONS 数组换题，他点选后用 widget.state 回读答案。样式定版：卡片做内层结构、淡蓝底＋蓝边框、选项行带边框、间距收紧、不写多余的话。

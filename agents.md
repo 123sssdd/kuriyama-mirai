@@ -9,3 +9,5 @@ Add an entry whenever you work something out worth keeping, for example:
 - a workflow that worked, or a mistake not to repeat
 
 It starts empty and is meant to grow slowly. Don't pad it; a short, accurate file beats a long, stale one.
+
+- 聊天 widget 的 HTML 里 <style> 样式块疑似不生效（2026-11-04 实测：卡片底色和边框写在 style 块里没渲染出来，内联 style 的行样式正常）。关键样式一律写内联 style，不要依赖 <style> 块或主题选择器。
