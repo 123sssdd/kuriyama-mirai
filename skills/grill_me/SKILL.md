@@ -46,4 +46,4 @@ Vendored from Matt Pocock's skills collection (MIT License, Copyright (c) 2026 M
 
 ## 提问表单（呈现方式）
 
-grill-me 需要他逐条点选确认时，用生成式 HTML 表单呈现，模板在 ~/workspace/表单模板/grill-me提问表单.html（只给 grill-me 用）：改 QUESTIONS 数组换题，他点选后用 widget.state 回读答案。样式定版：卡片做内层结构、淡蓝底＋蓝边框、选项行带边框、间距收紧、不写多余的话。
+grill-me 需要他逐条点选确认时，用生成式 HTML 表单呈现，模板在 ~/workspace/表单模板/grill-me提问表单.html（只给 grill-me 用）：改 QUESTIONS 数组换题，他点选后用 widget.state 回读答案。样式已正式定版为手绘风（project-diagram-studio 规范：米白纸面、深蓝线条、粉彩分区）：外壳写死静态 HTML、脚本只填题，宽度 400、选项行带手绘风深蓝边框，不写多余的话。

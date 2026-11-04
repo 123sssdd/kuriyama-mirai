@@ -1,0 +1,5 @@
+name: "project-diagram-studio"
+title: "项目图解工作室（手绘风）"
+description: "Draw programming projects as light, hand-drawn style diagrams (dark blue strokes on pale paper, pastel sections, clear Chinese labels): architecture, sequence, flowchart, data flow, ER, state, deployment and AI/RAG flow diagrams. Verify content from source code or docs first, then apply the unified visual style while keeping each diagram type's semantics. User-supplied package (2026-11-04, via Google Drive zip); method-only, no bundled image service."
+category: "Media and design"
+include_in_prompt: false

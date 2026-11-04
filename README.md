@@ -19,11 +19,11 @@
 - `persona.md`：助理的人设说明（栗山未来的人物特征和说话方式）。
 - `soul.md`：助理的灵魂文件，含与 乌萨奇 相处的核心心法（结论先行、不清楚就追问、主动记偏好、每晚自审同步等）。
 - `user.md`：乌萨奇 的基本信息。
-- `skills/`：32 个已装好的 skill，每个都是 SKILL.md 加 skill.yaml，按组列：
+- `skills/`：33 个已装好的 skill，每个都是 SKILL.md 加 skill.yaml，按组列：
   - 工程组：`find_skills`（先找现成技能）、`grill_me`（需求不清时追问）、`grill_with_docs`（对照文档找遗漏）、`brainstorming`（想法变设计）、`improve_codebase_architecture`（架构深化报告）、`setup_matt_pocock_skills`（仓库配置）、`superpowers`（计划、TDD、调试、评审的工作法组）、`emilkowalski_skills`（动画与设计工程）、`hyperframes` 与 `hyperframes_cli`（HTML 转视频）、`self_evolution`（触发词【启动自进化模式】的整理同步流程）、`kuriyama_zhuzigao`（栗山未来·逐字稿：把多轮讨论整理成面试逐字稿、博客素材、复习材料）。
   - 人物蒸馏组：`distilly`（同事）、`boss_skills`（老板）、`ex_skill`（前任）、`crush_skills`（暗恋）、`yourself_skill`（自己）、`parents_skills`（父母）、`supervisor_skill`（导师）、`senpai_skill`（师兄）、`awesome_ai_personas`（合集导航）。
   - 自我认知组（等 乌萨奇 开口才用、只陪聊不诊断）：`satori`、`life_designer`、`self_interview_21day`、`interrogation_partner`、`carl_jung_skill`、`evolution_skills`。
-  - 视觉组：`diagram_design`（图表，不需 key）、`xiaohei_illustrations`（小黑手绘配图）、`baoyu_infographic`（完整信息图）、`smart_illustrator`（文章自动配图）、`infographic_agent`（研究到制图一条线）。
+  - 视觉组：`diagram_design`（图表，不需 key）、`xiaohei_illustrations`（小黑手绘配图）、`baoyu_infographic`（完整信息图）、`smart_illustrator`（文章自动配图）、`infographic_agent`（研究到制图一条线）、`project-diagram-studio`（手绘风项目图解：浅色纸面、深蓝线条、粉彩分区，架构／时序／ER 等）。
 
 ## 其他 AI 接手时的阅读顺序
 
