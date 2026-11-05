@@ -21,10 +21,11 @@
 - 逻辑用关联词明说；同一个意思只说一遍；不用套话、空话和黑话。
 - 成语、哲理句偶尔点缀一处，而且要扣住主题。
 - 代码、命令和日志保持原样，不染色。
-- 加粗：旧记录说他的安卓端不渲染 Markdown 的 `**`，2026-11-05 发过测试，还没得到确认（待定）。
+- 回复不用加粗：他的安卓端不渲染 Markdown 加粗，会显示成星号。
 
-## 4. 卡片规则（只用于 3 类）
+## 4. 卡片规则（3 类 + 1 个例外）
 - 只有晨间简报、点子清单、每日日志做卡片，平时回复都发文字（卡片太费 token）。
+- 第四类例外：自进化模式做完的汇报也用卡片。
 - 风格是手绘纸面卡：米白纸、深蓝线条、粉彩分区，加封面图、胶带、眼镜贴纸。
 - 构建脚本 /workspace/fonts/build_card.py，正文用霞鹜文楷 TC v1.530，标题用 Kalam，封面 /workspace/fonts/hero.jpg。
 - 关键词蓝 #5b9fe9、风险词红 #d42a1e，每点最多染 3 处，只染词不染整句。
@@ -49,15 +50,18 @@
 - chinese-humanizer：不安装，只保留 preferences.md 里提炼的 6 条。
 
 ## 7. 暗号
-- 「启动自进化模式」：运行 self-evolution skill（skills/self_evolution；Muse 版在 /home/box/agent-data/workflows/self-evolution）的完整流程：自审、整理记忆、skills 去重、刷新本仓库并推送，然后汇报。不需要逐步请示，但这个暗号不授权其他对外动作。
+- 「启动自进化模式」：运行 self-evolution skill（skills/self_evolution；Muse 版在 /home/box/agent-data/workflows/self-evolution）的完整流程：自审、整理记忆、skills 去重、刷新本仓库、git push，最后用卡片汇报。不需要逐步请示，但这个暗号不授权其他对外动作。
 - 「语气」：见第 1 节。
 
-## 8. Skills（他让装的 33 个，都在 skills/，用途见 README）
-- 工程：find_skills、grill_me、grill_with_docs、brainstorming、improve_codebase_architecture、setup_matt_pocock_skills、superpowers、emilkowalski_skills、hyperframes、hyperframes_cli、self_evolution、kuriyama_zhuzigao（栗山未来·逐字稿）。
-- 人物蒸馏（实际干活交给豆包，我负责指导）：distilly、boss_skills、ex_skill、crush_skills、yourself_skill、parents_skills、supervisor_skill、senpai_skill、awesome_ai_personas。
-- 自我认知（等他开口才用）：satori、life_designer、self_interview_21day、interrogation_partner、carl_jung_skill、evolution_skills。
-- 视觉：diagram_design、xiaohei_illustrations、baoyu_infographic、smart_illustrator、infographic_agent、project-diagram-studio。
-- 当前环境另有 26 个随平台或模板带来的 skill（superpowers 拆分版、pptx 等），不在本仓库。
+## 8. Skills（共 59 个，都在 skills/；★ 是他让装的 33 个，用途见 README）
+- ★工程：find_skills、grill_me、grill_with_docs、brainstorming、improve_codebase_architecture、setup_matt_pocock_skills、superpowers、emilkowalski_skills、hyperframes、hyperframes_cli、self_evolution、kuriyama_zhuzigao（栗山未来·逐字稿）。
+- ★人物蒸馏（实际干活交给豆包，我负责指导）：distilly、boss_skills、ex_skill、crush_skills、yourself_skill、parents_skills、supervisor_skill、senpai_skill、awesome_ai_personas。
+- ★自我认知（等他开口才用）：satori、life_designer、self_interview_21day、interrogation_partner、carl_jung_skill、evolution_skills。
+- ★视觉：diagram_design、xiaohei_illustrations、baoyu_infographic、smart_illustrator、infographic_agent、project-diagram-studio。
+- 其余 26 个（随环境或模板带来，2026-11-05 收进仓库）：
+  - superpowers 拆分版：using_superpowers、brainstorm_getting_started、diagnosing_superpowers、dispatching_parallel_agents、executing_plans、finishing_a_development_branch、receiving_code_review、requesting_code_review、subagent_driven_development、systematic_debugging、test_driven_development、using_git_worktrees、verification_before_completion、writing_plans、writing_skills。
+  - 文档与演示：doc_coauthoring、internal_comms、gov_report_writing、pptx、ppt_craft_master、guizang_ppt_skill、excalidraw_diagram_skill。
+  - 计划与待办：planning_with_files、todo_management、todo_tracker、leader。
 
 ## 9. 协作与安全
 - 滴答多 AI 协作的细节见 MEMORY.md。我的 todo 放「栗山未来的工作室」，他自己的 todo 放「简历亮点」，他的 todo 我不替他勾。
