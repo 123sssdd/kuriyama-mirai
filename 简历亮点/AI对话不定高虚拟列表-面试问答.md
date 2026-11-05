@@ -5,8 +5,9 @@
 
 ## 简历原文（第 3 点）
 
-原文待补（日志里只有摘要，未存逐字原文；以下是摘要，不是原文）：
-自研轻量虚拟列表，对比 react-virtualized 30KB+ 与 react-window；全局 ResizeObserver 更新位置缓存、IntersectionObserver 替代 scroll 监听、自动更新位置缓存、包体积 <4KB；含千级会话视口 DOM 48→24、快滚 FPS 等数字（FPS 具体数值待补）。
+3. 针对 AI对话 历史记录 随机不定高长列表,对比 react-virtualized（30KB+）和 react-window 后，实现轻量虚拟列表：
+- 使用 全局 ResizeObserver 监听 视口 DOM，更新位置缓存，相比 virtualized，千级会话，视口 DOM 48—>24，高度误差显著降低(图片懒加载场景）；移动端效果差，RAF， 软键盘弹出～240ms，位置重算 ~180 次/s→~15 次/s（移动端 ~12视口 DOM）；CPU 弱，transform 优化，快滚 FPS：~18 → ~32（移动端）
+- 自动更新位置缓存，相比 window，单次更新后续重算时间，3ms–> 0.1ms 级；使用 IntersectionObserver 替代 scroll (二者），快滚 FPS 28→58（Chrome）；包体积<4KB。
 
 ---
 
