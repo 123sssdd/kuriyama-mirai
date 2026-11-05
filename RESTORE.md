@@ -23,7 +23,7 @@
 
 ## 第四步：定时任务（crons/ 里是定义全文，照着重建）
 - nightly-review-sync：每天 00:00 自审当天、整理记忆与 skills、同步本仓库；静默执行。定义见 crons/nightly-review-sync.md，它归属目标 goals/nightly-review-and-github-sync/GOAL.md。
-- backup-avatar-generate-2026-11-04：一次性，2026-11-04 02:00 用参考图生成备选头像；过期后无需重建。定义见 crons/backup-avatar-generate-2026-11-04.md。
+- 备选头像（backup-avatar-generate-2026-11-04）：2026-11-05 乌萨奇定：备选头像任务已删除，无需重建。
 
 ## 第五步：目标、Feed 与其他
 - 长期目标「持续想和乌萨奇有关的点子」：见 goals/jacob/GOAL.md，在新环境重建为同名目标。
