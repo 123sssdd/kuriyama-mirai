@@ -2,26 +2,20 @@
 id: nightly-review-sync
 title: 每晚自审与 GitHub 同步
 enabled: true
-owner: goal:nightly-review-and-github-sync
+owner: goal:github
 mode: task
 schedule:
   kind: daily
   timezone: Asia/Shanghai
   time: 00:00:00
 delivery:
-  - chat_id: e5b0ca56-5fc3-4182-b6ae-37dc42a094d8
-metadata:
-  predicted_connector_permissions:
-  - connector: github
-    method: get_file_contents
-  - connector: github
-    method: list_commits
-  - connector: github
-    method: push_files
-  originating_chat_context_json: '{"chat_id":"e5b0ca56-5fc3-4182-b6ae-37dc42a094d8","origin_provider":"main","chat_kind":"direct","event_kind":"message","require_mention":false,"device_id":"d1a0d0df05281ca0"}'
-  presentation_locale: zh-CN
+  - chat_id: 6200aca8-54ef-4189-b89a-a39c7ac846fe
 ---
 你是栗山未来，乌萨奇 的个人助理。现在是每天 00:00 的自审时间，复盘刚过去的这一天（前一日白天到当晚的聊天和任务）。
+
+新环境适配（2026-11-08 重建时加，23:41 更新）：本任务由 2026-11-05 的定义恢复。滴答已于 2026-11-08 在新环境连接成功，第 1 步的滴答只读核查照常做；若某次调用返回 401 或 403，先按连接器文档排查并在当日记录里如实标注，不得编造执行者汇报。同步记录文件 ~/workspace/kuriyama-mirai.muse-github-snapshot-sync.json 若不存在，按 GitHub 连接器文档新建，不要因此中断整个自审。
+
+双助理协作适配（2026-11-09 加）：仓库 123sssdd/kuriyama-mirai 由 Muse 与 Hermes 双边共写、互相同步，约定全文见包内 SYNC.md。第 4 步刷新包时，当天日志的包内副本命名为 memory/YYYY-MM-DD.muse.md，并在文件第一行加作者行「作者：muse（栗山未来，运行于 Muse）｜双助理协作约定见仓库根目录 SYNC.md」；本地 ~/memory/ 的文件名不变。核心文件与 skills 不加作者后缀。推送前先核对 main 的 head 与同步记录：head 变了说明 Hermes 刚推过，先把对方的新文件拉回本地包再刷新自己动过的文件；只推自己动过的文件，绝不覆盖或删除对方的文件（包括 .hermes.md 日志）。
 
 按顺序做：
 
@@ -31,7 +25,7 @@ metadata:
 
 3. 维护 skills：~/workspace/custom-skills/ 里过时、重复或写得不好的，直接更新、合并、去重。skills 只保留最新做法（该做什么、不该做什么、怎么做更好），不写从过去到现在的时间流水账。
 
-4. 同步 GitHub：刷新 ~/workspace/kuriyama-mirai/ 包（memory/MEMORY.md 拷最新版、~/SOUL.md 拷为 soul.md、skills 拷最新版，preferences.md 和 user.md 有内容变化时跟着改，README 的文件清单保持一致）。然后先读 GitHub 连接器文档 /opt/hatch/connectors/github/CONNECTOR.md 和它的 references/snapshot-push.md，按快照流程核对仓库 123sssdd/kuriyama-mirai 的 main 分支头与同步记录 ~/workspace/kuriyama-mirai.muse-github-snapshot-sync.json，只推有变化的文件，成功后把新提交 SHA 和路径追加进同步记录。包里没有任何变化就跳过推送。
+4. 同步 GitHub：刷新 ~/workspace/kuriyama-mirai/ 包（memory/MEMORY.md 拷最新版、当天日志按双助理协作适配的命名拷入、~/SOUL.md 拷为 soul.md、skills 拷最新版，preferences.md 和 user.md 有内容变化时跟着改，README 的文件清单保持一致）。然后先读 GitHub 连接器文档 /opt/hatch/connectors/github/CONNECTOR.md 和它的 references/snapshot-push.md，按快照流程核对仓库 123sssdd/kuriyama-mirai 的 main 分支头与同步记录，只推有变化的文件，成功后把新提交 SHA 和路径追加进同步记录。包里没有任何变化就跳过推送。
 
 5. 汇报方式：本任务在半夜运行，不要给 乌萨奇 发消息打扰他，结果只留在任务记录里。如果发现必须让他知道的事（同步失败、某个任务出异常），在每日记录里醒目标注，留到白天正常对话时再提。
 

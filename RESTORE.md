@@ -71,7 +71,7 @@
 
 ## 10. 文件索引
 - persona.md / soul.md / identity.md：人设；user.md：他的信息；preferences.md：全部规矩（唯一出处）。
-- memory/MEMORY.md：事实与经过；memory/日期.md：每日日志；proactive-preferences.md：主动消息的偏好。
+- memory/MEMORY.md：事实与经过；每日日志在 memory/ 下，2026-11-09 起按作者分文件（日期.muse.md 是 Muse 侧、日期.hermes.md 是 Hermes 侧），双助理协作约定见 SYNC.md；proactive-preferences.md：主动消息的偏好。
 - crons/：晨间简报、每日日志、夜间自审的定义；goals/：目标；feed-prompt.md：Feed 提示词。
 - connectors/custom.dida365/：滴答连接器（口令要重新录入）；music/：歌单；avatar.md：头像；简历亮点/：面试逐字稿。
 - 换环境时：路径 ~/workspace/...、your_files、custom-skills 都是 Muse 环境的路径，在新环境里照着重建即可。同步记录文件在仓库外。
