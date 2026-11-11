@@ -77,6 +77,8 @@ body {
   --ui-control-hover-background: transparent !important;
   --ui-control-active-background: transparent !important;
   --ui-editor-surface-background: transparent !important;
+  --ui-widget-surface-background: transparent !important;
+  --ui-bg-editor: transparent !important;
 
   /* 文件 Diff 增删行配色：鲜亮 3px 指示边 + 清透红绿微光底（既透出壁纸又一眼分明） */
   --ui-diff-add-border: #10b981 !important;
@@ -294,17 +296,73 @@ input::placeholder {
   border-left-width: 3px !important;
 }
 
-/* Diff 顶栏的 +N / -N 行数统计保留醒目翠绿与玫红配白色光晕 */
-[data-slot="tool-block"] .text-emerald-600 {
+/* Diff 顶栏与文件改动摘要卡片的 +N / -N 行数统计：保留醒目翠绿与玫红配白色光晕 */
+[data-slot="tool-block"] .text-emerald-600,
+[data-slot="aui_changed-files"] .text-\\(--ui-green\\),
+.text-\\(--ui-green\\),
+.text-\\(--ui-green\\) * {
   color: #047857 !important;
   -webkit-text-fill-color: #047857 !important;
   font-weight: 700 !important;
+  text-shadow: 0 0 2px #ffffff, 0 0 2px #ffffff, 0 0 4px #ffffff, 0 0 8px #ffffff !important;
 }
 
-[data-slot="tool-block"] .text-rose-600 {
+[data-slot="tool-block"] .text-rose-600,
+[data-slot="aui_changed-files"] .text-\\(--ui-red\\),
+.text-\\(--ui-red\\),
+.text-\\(--ui-red\\) * {
   color: #be123c !important;
   -webkit-text-fill-color: #be123c !important;
   font-weight: 700 !important;
+  text-shadow: 0 0 2px #ffffff, 0 0 2px #ffffff, 0 0 4px #ffffff, 0 0 8px #ffffff !important;
+}
+
+/* 回复完成后底部弹出的“N 个文件已更改”卡片 ([data-slot="aui_changed-files"]) 与“滚动到底部”胶囊按钮 */
+[data-slot="aui_changed-files"],
+[data-slot="aui_thread-scroll-to-bottom"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1.5px solid rgba(91, 110, 245, 0.45) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+[data-slot="aui_changed-files"]:hover,
+[data-slot="aui_thread-scroll-to-bottom"]:hover {
+  border-color: rgba(91, 110, 245, 0.88) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
+}
+
+[data-slot="aui_changed-files"] span:not(.text-\\(--ui-green\\)):not(.text-\\(--ui-red\\)),
+[data-slot="aui_changed-files"] button,
+[data-slot="aui_thread-scroll-to-bottom"] {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  font-weight: 600 !important;
+  text-shadow: 0 0 2px #ffffff, 0 0 2px #ffffff, 0 0 4px #ffffff, 0 0 8px #ffffff, 0 0 12px #ffffff !important;
+}
+
+[data-slot="aui_changed-files"] .row-hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 1.5px solid transparent !important;
+  border-radius: 8px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+[data-slot="aui_changed-files"] .row-hover:hover {
+  border-color: rgba(91, 110, 245, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
+}
+
+/* 审查面板标题前的装饰点 (.dither) 改为清晰黑实心小圆点配白色光晕 */
+.dither {
+  background: #000000 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 2px 1px #ffffff, 0 0 5px 2px #ffffff !important;
 }
 
 /* 11. 针对非隐藏的半透明文字类提亮，绝不触碰 opacity-0 隐藏图层 */
