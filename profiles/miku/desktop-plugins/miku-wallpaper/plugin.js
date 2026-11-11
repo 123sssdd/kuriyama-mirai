@@ -534,7 +534,12 @@ input::placeholder {
 }
 
 [role="dialog"]:has([cmdk-root]) *,
-[cmdk-root] * {
+[cmdk-root] *,
+[role="menu"],
+[role="menu"] *,
+[role="listbox"],
+[role="listbox"] *,
+[data-radix-popper-content-wrapper] [role="menu"] * {
   text-shadow: none !important;
   filter: none !important;
 }
