@@ -1,11 +1,10 @@
 /**
  * Chat dynamic wallpaper: Hatsune Miku 3 (Bedroom).
- * Complete White Halo + LXGW WenKai TC Font + Indigo-Blue Sidebar Borders:
- * 1. Enforces `LXGW WenKai TC` (霞鹜文楷 TC) across all UI text, inputs, and buttons
- *    (overriding `ui-preferences.json` theme fontSans and `styles.css` CJK PingFang rules).
- * 2. Applies Fig.2's `#5B6EF5` blue-purple border (at ~75%–88% opacity) to left sidebar
- *    menu buttons (Fig.1) and session cards (`.row-hover`, Fig.3), stripping hazy row fills.
- * 3. Includes `.opacity-30` in the opacity lift so the sidebar "搜索会话..." field is crisp.
+ * Complete White Halo + LXGW WenKai TC Font + Hover-Only Indigo Borders:
+ * 1. Lifts `[data-conversation-scaffold]` (`opacity: 0.67` in styles.css) to `opacity: 1 !important`
+ *    so reasoning/tool summary rows ("Analyzed 3 images...", "已分析图片 41s") render in vivid black + white halo.
+ * 2. Sidebar menu buttons & session rows (`.row-hover`) hide their border at rest (`border-color: transparent`)
+ *    and ONLY show the `#5B6EF5` blue-purple border on `:hover` for the single hovered item.
  */
 import { useEffect } from 'react'
 import { jsx } from 'react/jsx-runtime'
@@ -88,7 +87,7 @@ body {
   text-shadow: 0 0 1.5px #ffffff, 0 0 3px #ffffff, 0 0 6px #ffffff, 0 0 12px rgba(255, 255, 255, 0.95) !important;
 }
 
-/* 4. 显式开启按钮与输入框的光晕与字体继承 */
+/* 4. 显式开启按钮、输入框以及图 1 分析推理/工具折叠过程（data-conversation-scaffold）的鲜黑字与光晕继承 */
 #root button:not([data-overlay-surface] button),
 #root input:not([data-overlay-surface] input),
 #root textarea:not([data-overlay-surface] textarea),
@@ -97,11 +96,21 @@ body {
 [data-tour="sessions-sidebar"] a,
 [data-tour="sessions-sidebar"] span,
 [data-titlebar-cluster] button,
-[role="tab"] {
+[role="tab"],
+[data-conversation-scaffold],
+[data-conversation-scaffold] *,
+[data-slot="aui_assistant-message-content"] [data-conversation-scaffold],
+[data-slot="aui_background-result"] [data-conversation-scaffold],
+[data-slot="aui_background-resume"],
+[data-tool-summary],
+[data-tool-row],
+[data-slot="tool-block"],
+[data-slot="aui_thinking-disclosure"] {
   font-family: inherit !important;
   color: #000000 !important;
   opacity: 1 !important;
   text-shadow: inherit !important;
+  --disclosure-caret-rest: 1 !important;
 }
 
 [data-tour="sessions-sidebar"] input::placeholder,
@@ -111,15 +120,15 @@ input::placeholder {
   text-shadow: 0 0 1.5px #ffffff, 0 0 3px #ffffff, 0 0 6px #ffffff !important;
 }
 
-/* 5. 图 1 左侧栏新建会话等菜单按钮 + 图 3 左侧栏会话条 (.row-hover)：
-      去掉灰白底色，统一换上图 2 同款蓝紫色 (#5B6EF5) 稍微降低透明度的清晰边框 */
+/* 5. 图 2 左侧栏新建会话等菜单按钮 + 会话条 (.row-hover)：
+      平时正常状态不显示蓝色边框（透明），只有鼠标经过 (:hover) 对应区域时才显示那一个蓝框 */
 [data-tour="sessions-sidebar"] [data-slot="sidebar-menu-button"],
 [data-tour="sessions-sidebar"] li > button {
   background: transparent !important;
   background-color: transparent !important;
-  border: 1.5px solid rgba(91, 110, 245, 0.72) !important;
+  border: 1.5px solid transparent !important;
   border-radius: 8px !important;
-  margin-bottom: 3px !important;
+  box-shadow: none !important;
   transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 
@@ -127,26 +136,25 @@ input::placeholder {
 [data-tour="sessions-sidebar"] li > button:hover {
   background: transparent !important;
   background-color: transparent !important;
-  border-color: rgba(91, 110, 245, 0.92) !important;
-  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.55) !important;
+  border-color: rgba(91, 110, 245, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
 }
 
-/* 图 3 左侧栏会话卡片 (.row-hover)：全透明背景 + 图 2 同款蓝紫色边框 */
-[data-tour="sessions-sidebar"] .row-hover {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: 1.5px solid rgba(91, 110, 245, 0.68) !important;
-  border-radius: 10px !important;
-  margin-bottom: 4px !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
-}
-
-[data-tour="sessions-sidebar"] .row-hover:hover,
+[data-tour="sessions-sidebar"] .row-hover,
 [data-tour="sessions-sidebar"] .row-hover.bg-\\(--ui-row-active-background\\) {
   background: transparent !important;
   background-color: transparent !important;
-  border: 1.5px solid rgba(91, 110, 245, 0.90) !important;
-  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.65) !important;
+  border: 1.5px solid transparent !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+[data-tour="sessions-sidebar"] .row-hover:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(91, 110, 245, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
 }
 
 /* 6. 代码块与 Diff 面板：统一鲜亮纯黑 + 白色光晕 */
@@ -219,7 +227,7 @@ input::placeholder {
   fill: rgba(255, 255, 255, 0.85) !important;
 }
 
-/* 10. 用户输入条（未选中与点击选中编辑状态）：全透明 + 图 2 同款蓝紫边框 + 鲜黑字 + 白色光晕 */
+/* 10. 用户输入条（未选中与点击选中编辑状态）：平时隐藏蓝框，悬停或选中时显示蓝框 */
 [data-tour="sessions-sidebar"],
 [data-slot="aui_assistant-message-root"],
 [data-slot="aui_user-message-root"],
@@ -236,7 +244,7 @@ input::placeholder {
 }
 
 [data-tour="sessions-sidebar"] {
-  border-right: 1px solid rgba(91, 110, 245, 0.35) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 [data-slot="aui_user-message-root"] {
@@ -245,8 +253,15 @@ input::placeholder {
 }
 
 .composer-human-message {
-  border: 1.5px solid rgba(91, 110, 245, 0.75) !important;
+  border: 1.5px solid transparent !important;
   border-radius: 12px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.composer-human-message:hover,
+[data-slot="aui_edit-composer-root"] .composer-human-message {
+  border-color: rgba(91, 110, 245, 0.85) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
 }
 
 /* 11. 聊天滚动视口底部遮罩：防止聊天文字与底部输入框重叠 */
@@ -267,7 +282,7 @@ input::placeholder {
   ) !important;
 }
 
-/* 12. 底部输入框：完全透明无白底 + 蓝紫边框 */
+/* 12. 底部输入框：平时半透明细白边，悬停或打字聚焦时显示蓝紫边框 */
 [data-slot="composer-dock"],
 [data-slot="composer-root"] {
   background: transparent !important;
@@ -287,17 +302,20 @@ input::placeholder {
   background-color: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1.5px solid rgba(91, 110, 245, 0.72) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.45) !important;
   border-radius: 12px !important;
   box-shadow: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 
+[data-slot="composer-surface"]:hover,
 [data-slot="composer-surface"]:focus-within,
+.group\\/composer-surface:hover,
 .group\\/composer-surface:focus-within {
   background: transparent !important;
   background-color: transparent !important;
-  border-color: #5B6EF5 !important;
-  box-shadow: 0 0 0 1px #5B6EF5 !important;
+  border-color: rgba(91, 110, 245, 0.88) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
 }
 
 /* 13. 设置页与管理档案页：严格限定在 [data-overlay-surface] 下才用纯白底 */
@@ -347,7 +365,7 @@ input::placeholder {
 export default {
   id: ID,
   name: '初音未来动态背景',
-  description: 'LXGW WenKai TC font, tight white halo, and #5B6EF5 indigo-blue sidebar borders.',
+  description: 'LXGW WenKai TC font, tight white halo on all reasoning/tool rows, and hover-only indigo borders.',
   register(ctx) {
     ctx.register({
       id: 'miku-wallpaper-runner',
