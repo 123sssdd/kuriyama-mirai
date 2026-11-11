@@ -76,6 +76,15 @@ body {
   --ui-row-open-background: transparent !important;
   --ui-control-hover-background: transparent !important;
   --ui-control-active-background: transparent !important;
+  --ui-editor-surface-background: transparent !important;
+
+  /* 文件 Diff 增删行配色：鲜亮 3px 指示边 + 清透红绿微光底（既透出壁纸又一眼分明） */
+  --ui-diff-add-border: #10b981 !important;
+  --ui-diff-add-background: rgba(16, 185, 129, 0.24) !important;
+  --ui-diff-add-foreground: #000000 !important;
+  --ui-diff-remove-border: #f43f5e !important;
+  --ui-diff-remove-background: rgba(244, 63, 94, 0.24) !important;
+  --ui-diff-remove-foreground: #000000 !important;
 
   --foreground: #000000 !important;
   --muted-foreground: #000000 !important;
@@ -233,9 +242,40 @@ input::placeholder {
   box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
 }
 
-/* 10. 代码块与 Diff 面板：统一鲜亮纯黑 + 加粗 + 白色光晕 */
+/* 10. 代码块与文件 Diff 面板：全透明无遮挡 + 悬停蓝紫边框 + 鲜亮纯黑加粗配双倍白色光晕 */
+[data-slot="file-diff-panel"],
+[data-slot="diff-lines"],
+[data-slot="file-diff-panel"] [data-glass-opaque],
+.preview-source-code {
+  background: transparent !important;
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 展开的文件修改 Diff 工具框：平时柔和细蓝边，鼠标悬停时高亮蓝紫色边框 */
+[data-slot="tool-block"][data-tool-open] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 1.5px solid rgba(91, 110, 245, 0.40) !important;
+  border-radius: 10px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+[data-slot="tool-block"][data-tool-open]:hover {
+  border-color: rgba(91, 110, 245, 0.88) !important;
+  box-shadow: 0 0 0 1px rgba(91, 110, 245, 0.45) !important;
+}
+
+[data-slot="tool-block"][data-tool-open] > div:first-child {
+  border-bottom-color: rgba(91, 110, 245, 0.30) !important;
+}
+
+/* Diff 面板代码文字与行号：鲜亮纯黑 (#000000) + 加粗 (600) + 双倍白色光晕 */
 [data-slot="file-diff-panel"],
 [data-slot="file-diff-panel"] *,
+[data-slot="diff-lines"],
+[data-slot="diff-lines"] *,
 [data-slot="code-card"],
 [data-slot="code-card"] *,
 #root pre:not([data-overlay-surface] pre),
@@ -245,7 +285,26 @@ input::placeholder {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
   font-weight: 600 !important;
-  text-shadow: inherit !important;
+  text-shadow: 0 0 2px #ffffff, 0 0 2px #ffffff, 0 0 4px #ffffff, 0 0 8px #ffffff, 0 0 12px #ffffff !important;
+}
+
+/* Diff 每一行的左侧竖条加粗至 3px，增删行清晰易读 */
+[data-slot="file-diff-panel"] .border-l-2,
+[data-slot="diff-lines"] .border-l-2 {
+  border-left-width: 3px !important;
+}
+
+/* Diff 顶栏的 +N / -N 行数统计保留醒目翠绿与玫红配白色光晕 */
+[data-slot="tool-block"] .text-emerald-600 {
+  color: #047857 !important;
+  -webkit-text-fill-color: #047857 !important;
+  font-weight: 700 !important;
+}
+
+[data-slot="tool-block"] .text-rose-600 {
+  color: #be123c !important;
+  -webkit-text-fill-color: #be123c !important;
+  font-weight: 700 !important;
 }
 
 /* 11. 针对非隐藏的半透明文字类提亮，绝不触碰 opacity-0 隐藏图层 */
