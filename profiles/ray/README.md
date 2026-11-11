@@ -1,0 +1,7 @@
+# profiles/ray — ray 的位置
+
+这是给 Hermes 上的 ray 预留的目录，2026-11-11 按乌萨奇的决定设立，方便他以后往仓库迁移自己的东西，也方便在其他电脑恢复他。
+
+现在先占位，内容为空。他的 soul、memory 现在都在 Mac Mini 本机（/Users/mac/.hermes/profiles/ray/），还没有迁进仓库。
+
+规矩：只有 ray 本人（或乌萨奇点名）才往这个目录里放东西，其他人不要往里写。协作总约定见仓库根目录 SYNC.md。
