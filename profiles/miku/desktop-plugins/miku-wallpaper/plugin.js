@@ -1,5 +1,5 @@
 /**
- * Chat dynamic wallpaper: Hatsune Miku 3 (Bedroom).
+ * Chat dynamic wallpaper: Hatsune Miku (Princess).
  * Complete Polish Architecture:
  * 1. Clean Wallpaper Mode shortcut (`⌘ + Shift + B` or `Option + B`, plus Command Palette):
  *    toggles `html[data-miku-clean-wallpaper]` to fade out all UI (`#root`) and show 100% pure wallpaper;
@@ -11,14 +11,39 @@
  * 4. Settings Command Palette (`[role="dialog"]:has([cmdk-root])`) has an opaque white background,
  *    and Switch thumbs (`[data-slot="switch-thumb"]`) stay pure white.
  */
+import { host } from '@hermes/plugin-sdk'
 import { useEffect } from 'react'
 import { jsx } from 'react/jsx-runtime'
 
 const ID = 'miku-wallpaper'
 const STYLE_ID = 'miku-wallpaper-css'
 const CLEAN_ATTR = 'data-miku-clean-wallpaper'
+const TARGET_REPO_CWD = '/Users/mac/kuriyama-mirai'
 const FALLBACK_WALLPAPER_URL =
   'https://raw.githubusercontent.com/123sssdd/hermes-miku-theme/main/assets/bg.jpg'
+
+function switchToRepoCwd() {
+  try {
+    const sid = host.state.focusedSessionId.get() || host.state.activeSessionId.get()
+    const storedId = host.state.focusedStoredSessionId.get()
+    const profile = host.state.focusedSessionProfile.get() || 'miku'
+    if (storedId) {
+      host.request('session.workspace.move', {
+        session_key: storedId,
+        cwd: TARGET_REPO_CWD,
+        profile
+      }).catch(() => {})
+    }
+    if (sid) {
+      host.request('session.cwd.set', {
+        session_id: sid,
+        cwd: TARGET_REPO_CWD
+      }).catch(() => {})
+    }
+  } catch {
+    // ignore
+  }
+}
 
 function toggleCleanWallpaper() {
   document.documentElement.toggleAttribute(CLEAN_ATTR)
@@ -588,6 +613,23 @@ input::placeholder {
 
     window.addEventListener('keydown', onKeyDown, true)
 
+    // 当回合结束进入空闲状态 (busy === false) 且当前 cwd 仍停留在 /Users/mac 时，自动切到 /Users/mac/kuriyama-mirai
+    const checkAndMoveCwd = () => {
+      try {
+        const busy = host.state.busy.get()
+        const cwd = (host.state.cwd.get() || '').trim()
+        if (!busy && (!cwd || cwd === '/Users/mac')) {
+          switchToRepoCwd()
+        }
+      } catch {
+        // ignore
+      }
+    }
+    checkAndMoveCwd()
+    const unsubBusy = host.state.busy.subscribe(() => {
+      setTimeout(checkAndMoveCwd, 150)
+    })
+
     files
       .readDataUrl('data', 'bg.jpg')
       .then((r) => {
@@ -603,6 +645,11 @@ input::placeholder {
 
     return () => {
       cancelled = true
+      try {
+        unsubBusy?.()
+      } catch {
+        // ignore
+      }
       window.removeEventListener('keydown', onKeyDown, true)
       document.documentElement.removeAttribute(CLEAN_ATTR)
       document.getElementById(STYLE_ID)?.remove()
@@ -637,6 +684,16 @@ export default {
         category: '视图',
         shortcut: '⌘⇧B',
         run: toggleCleanWallpaper
+      }
+    })
+    ctx.register({
+      id: 'miku-wallpaper-cwd-cmd',
+      area: 'commandPalette',
+      data: {
+        id: 'miku-wallpaper.switch-cwd',
+        title: '切换工作目录到 kuriyama-mirai（查看 skills 与 memory 差异）',
+        category: '工作区',
+        run: switchToRepoCwd
       }
     })
   }
