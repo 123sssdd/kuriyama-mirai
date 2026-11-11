@@ -17,6 +17,8 @@ import { jsx } from 'react/jsx-runtime'
 const ID = 'miku-wallpaper'
 const STYLE_ID = 'miku-wallpaper-css'
 const CLEAN_ATTR = 'data-miku-clean-wallpaper'
+const FALLBACK_WALLPAPER_URL =
+  'https://raw.githubusercontent.com/123sssdd/hermes-miku-wallpaper/main/assets/bg.jpg'
 
 function toggleCleanWallpaper() {
   document.documentElement.toggleAttribute(CLEAN_ATTR)
@@ -464,9 +466,18 @@ input::placeholder {
 
     window.addEventListener('keydown', onKeyDown, true)
 
-    files.readDataUrl('data', 'bg.jpg').then((r) => {
-      if (r && r.ok && r.url) apply(r.url)
-    })
+    files
+      .readDataUrl('data', 'bg.jpg')
+      .then((r) => {
+        if (r && r.ok && r.url) {
+          apply(r.url)
+        } else {
+          apply(FALLBACK_WALLPAPER_URL)
+        }
+      })
+      .catch(() => {
+        apply(FALLBACK_WALLPAPER_URL)
+      })
 
     return () => {
       cancelled = true
