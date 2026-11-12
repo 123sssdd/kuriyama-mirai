@@ -1,14 +1,20 @@
 {
-  "version": 1,
+  "version": 2,
   "stickers": [
     {
       "id": "common-manbo-spin",
-      "file": "common/manbo-spin.gif",
+      "file": "common/common-manbo-spin.gif",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
       "category": "common",
+      "inherited_tag": "common",
+      "img_type": "表情包",
+      "character": "赛马娘、待兼诗歌剧、曼波",
+      "emotion": "欢脱、呆萌、精神状态美丽",
+      "action": "转圈、晃脑袋、发癫",
       "text": "曼波、欧马吉里曼波",
-      "vibe": "欢脱、精神状态美丽、带点微醺发癫",
       "craziness": 4,
-      "triggers": ["大功告成", "闲聊接梗", "气氛欢快时"]
+      "triggers": ["大功告成", "闲聊接梗", "气氛欢快时"],
+      "hidden": false
     }
   ]
 }
