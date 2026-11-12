@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "stickers": [
+    {
+      "id": "common-manbo-spin",
+      "file": "common/manbo-spin.gif",
+      "category": "common",
+      "text": "曼波、欧马吉里曼波",
+      "vibe": "欢脱、精神状态美丽、带点微醺发癫",
+      "craziness": 4,
+      "triggers": ["大功告成", "闲聊接梗", "气氛欢快时"]
+    }
+  ]
+}

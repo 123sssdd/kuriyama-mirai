@@ -1,1 +1,10 @@
 *.lock
+
+# 本地表情包图库与本机索引（图片与本机索引仅存各端本地，不同步到 GitHub）
+stickers/**/*.png
+stickers/**/*.jpg
+stickers/**/*.jpeg
+stickers/**/*.gif
+stickers/**/*.webp
+stickers/index.json
+

@@ -642,6 +642,18 @@ input::placeholder {
   background-color: #ffffff !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
 }
+
+/* 18. 聊天内联表情包贴纸缩略展示（匹配 stickers 目录路径的本地图片） */
+img[src*="stickers"],
+img[alt*="stickers"] {
+  max-width: 150px !important;
+  max-height: 150px !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 12px !important;
+  object-fit: contain !important;
+  margin-top: 6px !important;
+}
 `
       let el = document.getElementById(STYLE_ID)
       if (!el) {
