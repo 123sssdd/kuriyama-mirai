@@ -35,6 +35,19 @@ metadata:
 4. **零 Token 本地管理与精排脚本**：
    - 路径：`<repo_root>/skills/sticker-reply/scripts/sticker_tool.py`（纯 Python 标准库，无第三方依赖）。
 
+## 工作流零：每日自动新建带年份文件夹并切换 UU 远程路径（`sync-uu`）
+
+本机已配置 macOS LaunchAgent（`~/Library/LaunchAgents/com.usagi.sticker-uu-sync.plist`），每天 00:01 及开机时自动执行，也可随时手动运行：
+
+```bash
+python3 /Users/mac/kuriyama-mirai/skills/sticker-reply/scripts/sticker_tool.py sync-uu
+```
+
+该命令会自动完成三件事：
+1. 在 `/Users/mac/Downloads/表情包/` 下新建带年份的当日文件夹 `YYYY.MM.DD`（如 `2026.11.12`）。
+2. 自动修改 UU 远程后台配置文件 `/Users/Shared/UURemote/Shared/pub/setting.config` 中的 `file_transfer_custom_receive_directory` 为当日目录，并重定向旧目录软链接与 `今日上传` 软链接。
+3. 列出当日目录内已上传的所有图片路径，供 Bot 直接扫描入库。
+
 ## 工作流一：收到表情包并六维打标入库（Save & Deduplicate）
 
 当乌萨奇在聊天中发来图片/动图说「存起来」，或给出本地表情包文件夹路径时：

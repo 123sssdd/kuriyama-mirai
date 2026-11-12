@@ -2,11 +2,13 @@
 """
 跨端表情包管理与毫秒级本地检索工具 (Hermes & Muse 通用，纯标准库零依赖)
 功能：
-1. add: 计算 MD5 自动去重、归档图片、生成六维标签 + 目录继承标签写入 stickers/index.json
-2. match: 本地零 Token 精排检索（支持 0.45 置信度阈值、点播找图、主动表情、20% 概率斗图连发）
-3. hide / unhide / list: 隐藏看腻的表情包（保留文件但暂停检索）及查看本机图库统计
+1. sync-uu: 自动创建带年份的今日表情包目录 (/Users/mac/Downloads/表情包/YYYY.MM.DD) 并自动修改 UU 远程文件传输存储路径
+2. add: 计算 MD5 自动去重、归档图片、生成六维标签 + 目录继承标签写入 stickers/index.json
+3. match: 本地零 Token 精排检索（支持 0.45 置信度阈值、点播找图、主动表情、20% 概率斗图连发）
+4. hide / unhide / list: 隐藏看腻的表情包（保留文件但暂停检索）及查看本机图库统计
 """
 import argparse
+import datetime
 import hashlib
 import json
 import os
@@ -19,6 +21,9 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[3]
 STICKERS_DIR = REPO_ROOT / "stickers"
 INDEX_PATH = STICKERS_DIR / "index.json"
+
+DOWNLOAD_STICKERS_ROOT = Path("/Users/mac/Downloads/表情包")
+UU_SETTING_CONFIG = Path("/Users/Shared/UURemote/Shared/pub/setting.config")
 
 
 def load_index() -> dict:
@@ -55,6 +60,73 @@ def split_tokens(text: str) -> list[str]:
         return []
     parts = re.split(r"[\s,，、/|+；;]+", text.strip().lower())
     return [p for p in parts if p]
+
+
+def cmd_sync_uu(args: argparse.Namespace) -> int:
+    now = datetime.datetime.now()
+    date_str = args.date.strip() if args.date else now.strftime("%Y.%m.%d")
+    today_dir = DOWNLOAD_STICKERS_ROOT / date_str
+    today_dir.mkdir(parents=True, exist_ok=True)
+
+    # 维护一个固定软链接「今日上传」指向当天目录，并兼容无年份旧目录软链接
+    latest_link = DOWNLOAD_STICKERS_ROOT / "今日上传"
+    if latest_link.is_symlink() or latest_link.exists():
+        if latest_link.is_symlink():
+            latest_link.unlink()
+    try:
+        latest_link.symlink_to(today_dir)
+    except Exception:
+        pass
+
+    # 如果 UU 远程的 setting.config 存在，直接更新 file_transfer_custom_receive_directory
+    uu_updated = False
+    old_uu_path = None
+    if UU_SETTING_CONFIG.exists():
+        try:
+            cfg = json.loads(UU_SETTING_CONFIG.read_text(encoding="utf-8"))
+            old_uu_path = cfg.get("file_transfer_custom_receive_directory")
+            cfg["file_transfer_custom_receive_directory"] = str(today_dir)
+            UU_SETTING_CONFIG.write_text(
+                json.dumps(cfg, ensure_ascii=False, separators=(",", ":")),
+                encoding="utf-8",
+            )
+            uu_updated = True
+        except Exception as e:
+            print(f"WARNING: 更新 UU 远程配置失败: {e}", file=sys.stderr)
+
+    # 如果之前 UU 远程指向的旧目录是软链接（例如 ' 11.12'），也把它重定向到今日目录以防内存缓存未刷新
+    if old_uu_path:
+        old_p = Path(old_uu_path)
+        if old_p.is_symlink() and old_p.resolve() != today_dir.resolve():
+            try:
+                old_p.unlink()
+                old_p.symlink_to(today_dir)
+            except Exception:
+                pass
+
+    files = sorted(
+        [
+            str(p)
+            for p in today_dir.iterdir()
+            if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"}
+        ]
+    )
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "today_dir": str(today_dir),
+                "uu_config_updated": uu_updated,
+                "previous_uu_dir": old_uu_path,
+                "new_uu_dir": str(today_dir),
+                "image_count_in_today_dir": len(files),
+                "images": files,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+    return 0
 
 
 def cmd_add(args: argparse.Namespace) -> int:
@@ -113,7 +185,6 @@ def cmd_add(args: argparse.Namespace) -> int:
         "hidden": False,
     }
 
-    # 如果同 id 已存在则更新，否则追加
     replaced = False
     for i, item in enumerate(data["stickers"]):
         if item.get("id") == clean_id:
@@ -147,7 +218,6 @@ def score_sticker(item: dict, query_tokens: list[str], raw_query: str, bot: str,
         return 0.0
 
     cat = item.get("category", "common")
-    # 非通用池且不属于当前 bot 专属池时降低权重（除非用户点名搜该角色）
     bot_bonus = 0.0
     if bot:
         if cat == bot:
@@ -181,7 +251,6 @@ def score_sticker(item: dict, query_tokens: list[str], raw_query: str, bot: str,
                 best_q = max(best_q, weight)
         matched_score += best_q
 
-    # 归一化到 0 ~ 1 附近，再叠加角色池加分与轻微随机扰动避免每次只发同一张
     norm = matched_score / max(1.0, len(query_tokens) * 0.42)
     jitter = random.uniform(0.0, 0.06)
     return round(min(1.0, max(0.0, norm + bot_bonus + jitter)), 3)
@@ -217,7 +286,6 @@ def cmd_match(args: argparse.Namespace) -> int:
 
     scored.sort(key=lambda x: x["confidence"], reverse=True)
 
-    # 斗图模式 (battle)：20% 概率触发 2 张同风格连发（或显式指定 --combo）
     pick_count = 1
     combo_triggered = False
     if args.mode == "battle" and len(scored) >= 2:
@@ -294,6 +362,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Sticker Reply Tool for Hermes & Muse")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
+    p_sync = sub.add_parser("sync-uu", help="创建今日带年份的表情包文件夹并自动切换 UU 远程传输路径")
+    p_sync.add_argument("--date", default="", help="指定日期目录名（默认当天 YYYY.MM.DD）")
+
     p_add = sub.add_parser("add", help="入库新表情包（带 MD5 去重与六维标签）")
     p_add.add_argument("--file", required=True, help="源图片路径")
     p_add.add_argument("--category", default="common", choices=["common", "mirai", "miku", "bocchi", "ray"])
@@ -325,6 +396,8 @@ def main() -> int:
     sub.add_parser("list", help="列出本机图库统计与清单")
 
     args = parser.parse_args()
+    if args.cmd == "sync-uu":
+        return cmd_sync_uu(args)
     if args.cmd == "add":
         return cmd_add(args)
     if args.cmd == "match":
