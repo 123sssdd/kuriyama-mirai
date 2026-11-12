@@ -35,9 +35,9 @@ metadata:
 4. **零 Token 本地管理与精排脚本**：
    - 路径：`<repo_root>/skills/sticker-reply/scripts/sticker_tool.py`（纯 Python 标准库，无第三方依赖）。
 
-## 工作流零：每日自动新建带年份文件夹并切换 UU 远程路径（`sync-uu`）
+## 工作流零：按需新建当日带年份文件夹并切换 UU 远程路径（`sync-uu`）
 
-本机已配置 macOS LaunchAgent（`~/Library/LaunchAgents/com.usagi.sticker-uu-sync.plist`），每天 00:01 及开机时自动执行，也可随时手动运行：
+无需每日定时创建空文件夹；只有当乌萨奇说今天要传表情包或已上传时，再运行以下命令：
 
 ```bash
 python3 /Users/mac/kuriyama-mirai/skills/sticker-reply/scripts/sticker_tool.py sync-uu

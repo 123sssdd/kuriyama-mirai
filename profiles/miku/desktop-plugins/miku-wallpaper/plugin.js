@@ -15,7 +15,7 @@ const STYLE_ID = 'miku-wallpaper-css'
 const VIDEO_ID = 'miku-wallpaper-video'
 const CLEAN_ATTR = 'data-miku-clean-wallpaper'
 const TARGET_REPO_CWD = '/Users/mac/kuriyama-mirai'
-const CAROUSEL_INTERVAL_MS = 15000
+const CAROUSEL_INTERVAL_MS = 10 * 60 * 1000 // 10分钟
 const FALLBACK_WALLPAPER_URL =
   'https://raw.githubusercontent.com/123sssdd/hermes-miku-theme/main/assets/bg.jpg'
 
@@ -643,16 +643,18 @@ input::placeholder {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
 }
 
-/* 18. 聊天内联表情包贴纸缩略展示（匹配 stickers 目录路径的本地图片） */
-img[src*="stickers"],
-img[alt*="stickers"] {
-  max-width: 150px !important;
-  max-height: 150px !important;
-  width: auto !important;
-  height: auto !important;
-  border-radius: 12px !important;
-  object-fit: contain !important;
-  margin-top: 6px !important;
+/* 18. 聊天内联表情包贴纸缩略展示（字体大小的 10 倍 = 10em） */
+[data-slot="aui_assistant-message-root"] [data-slot="aui_markdown-image"],
+[data-slot="aui_markdown-image"]:has(img[alt*="common-"]),
+[data-slot="aui_markdown-image"]:has(img[alt*="miku-"]),
+[data-slot="aui_markdown-image"]:has(img[alt*="mirai-"]),
+[data-slot="aui_markdown-image"]:has(img[alt*="bocchi-"]),
+[data-slot="aui_markdown-image"]:has(img[alt*="ray-"]),
+[data-slot="aui_markdown-image"]:has(img[alt*="sticker"]) {
+  --image-preview-height: 10em !important;
+  --image-preview-max-width: 10em !important;
+  max-width: 10em !important;
+  max-height: 10em !important;
 }
 `
       let el = document.getElementById(STYLE_ID)
