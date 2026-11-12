@@ -1,15 +1,10 @@
 /**
- * Chat dynamic wallpaper: Hatsune Miku (Princess).
- * Complete Polish Architecture:
- * 1. Clean Wallpaper Mode shortcut (`⌘ + Shift + B` or `Option + B`, plus Command Palette):
- *    toggles `html[data-miku-clean-wallpaper]` to fade out all UI (`#root`) and show 100% pure wallpaper;
- *    press again (or `Esc`) to restore immediately.
- * 2. User message bubbles (`.composer-human-message`) always keep a crisp blue-purple border (`#5B6EF5`).
- *    Sidebar buttons and session rows only show their blue border on `:hover`.
- * 3. Thinking process (`[data-slot="aui_thinking-disclosure"]`), running tool status (`.shimmer`),
- *    and `TOOL PAYLOAD` JSON dumps are rendered in vivid pure black (`#000000`) + bold (`600`) + white halo.
- * 4. Settings Command Palette (`[role="dialog"]:has([cmdk-root])`) has an opaque white background,
- *    and Switch thumbs (`[data-slot="switch-thumb"]`) stay pure white.
+ * Chat dynamic wallpaper: Multi-bot profile wallpaper & carousel engine.
+ * - Supports per-bot wallpapers (`bocchi`, `miku`, `default`, `ray`) and automatic carousel rotation.
+ * - Automatically switches wallpaper when switching bots/sessions in Hermes Desktop.
+ * - Shortcuts:
+ *   1. `⌘ + Shift + B` or `Option + B`: Toggle Clean Wallpaper Mode.
+ *   2. `Option + N`: Next wallpaper in current bot's carousel.
  */
 import { host } from '@hermes/plugin-sdk'
 import { useEffect } from 'react'
@@ -17,10 +12,47 @@ import { jsx } from 'react/jsx-runtime'
 
 const ID = 'miku-wallpaper'
 const STYLE_ID = 'miku-wallpaper-css'
+const VIDEO_ID = 'miku-wallpaper-video'
 const CLEAN_ATTR = 'data-miku-clean-wallpaper'
 const TARGET_REPO_CWD = '/Users/mac/kuriyama-mirai'
+const CAROUSEL_INTERVAL_MS = 15000
 const FALLBACK_WALLPAPER_URL =
   'https://raw.githubusercontent.com/123sssdd/hermes-miku-theme/main/assets/bg.jpg'
+
+const PROFILE_WALLPAPERS = {
+  bocchi: [
+    { file: 'bocchi-1.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'bocchi-2.jpg', size: 'cover', position: '50% 24%', bgColor: '#f598a8', drift: 'top' },
+    { file: 'bocchi-3.jpg', size: 'cover', position: '50% 50%', bgColor: '#f6edf2', drift: 'center' }
+  ],
+  miku: [
+    { file: 'miku-1.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'miku-2.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'miku-4.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'miku-10.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'miku-3.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'miku-5.jpg', size: 'cover', position: '50% 50%', bgColor: '#c2d6d5', drift: 'center' },
+    { file: 'miku-6.jpg', size: 'cover', position: '50% 50%', bgColor: '#feb8d0', drift: 'center' },
+    { file: 'miku-7.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffd6c9', drift: 'center' },
+    { file: 'miku-8.jpg', size: 'cover', position: '50% 50%', bgColor: '#f0f7ff', drift: 'center' },
+    { file: 'miku-9.jpg', size: 'cover', position: '50% 50%', bgColor: '#f5fafa', drift: 'center' }
+  ],
+  default: [
+    { file: 'mirai-3.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'mirai-4.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'mirai-5.jpg', size: 'cover', position: '50% 50%', bgColor: '#f5ebe6', drift: 'center' },
+    { file: 'mirai-6.jpg', size: 'cover', position: '50% 50%', bgColor: '#f6e8f0', drift: 'center' },
+    { file: 'mirai-7.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'mirai-8.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' },
+    { file: 'mirai-9.jpg', size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' }
+  ],
+  ray: [
+    { file: 'ray-1.jpg', size: 'cover', position: '50% 50%', bgColor: '#2b2b2b', drift: 'center' },
+    { file: 'ray-2.jpg', size: 'cover', position: '50% 50%', bgColor: '#eef5fb', drift: 'center' }
+  ]
+}
+
+let triggerNextWallpaperGlobal = () => {}
 
 function switchToRepoCwd() {
   try {
@@ -49,10 +81,23 @@ function toggleCleanWallpaper() {
   document.documentElement.toggleAttribute(CLEAN_ATTR)
 }
 
+function resolveInitialProfile() {
+  try {
+    return (
+      host.state.focusedSessionProfile?.get?.() ||
+      host.state.focusedSessionOwner?.get?.()?.profile ||
+      host.state.profile?.get?.() ||
+      'miku'
+    )
+  } catch {
+    return 'miku'
+  }
+}
+
 function Wallpaper({ files }) {
   useEffect(() => {
     let cancelled = false
-    const apply = (url) => {
+    const injectBaseCss = () => {
       if (cancelled) return
       const css = `
 @keyframes miku-window-drift {
@@ -67,6 +112,18 @@ function Wallpaper({ files }) {
   }
 }
 
+@keyframes miku-window-drift-top {
+  0% {
+    background-position: 50% 24%;
+  }
+  50% {
+    background-position: 52% 22%;
+  }
+  100% {
+    background-position: 48% 26%;
+  }
+}
+
 /* 0. 纯享背景模式（按 ⌘ + Shift + B 或 Option + B 一键隐藏所有对话窗口与侧边栏，再按一下恢复） */
 #root {
   transition: opacity 0.25s ease !important;
@@ -78,14 +135,16 @@ html[${CLEAN_ATTR}] #root {
   user-select: none !important;
 }
 
-/* 1. 全窗口动态壁纸：100% 原图画质直出 */
+/* 1. 全窗口动态壁纸：支持按 Bot 自动切换与轮播 */
 body {
-  background-image: url("${url}") !important;
+  background-color: var(--miku-bg-color, #ffffff) !important;
+  background-image: var(--miku-bg-image, none) !important;
   background-repeat: no-repeat !important;
-  background-position: 50% 50% !important;
-  background-size: cover !important;
+  background-position: var(--miku-bg-position, 50% 50%) !important;
+  background-size: var(--miku-bg-size, cover) !important;
   background-attachment: fixed !important;
-  animation: miku-window-drift 28s ease-in-out infinite alternate !important;
+  animation: var(--miku-bg-animation, miku-window-drift 28s ease-in-out infinite alternate) !important;
+  transition: background-image 0.35s ease, background-color 0.35s ease !important;
   will-change: background-position;
 }
 
@@ -593,6 +652,228 @@ input::placeholder {
       el.textContent = css
     }
 
+    injectBaseCss()
+
+    const urlCache = new Map()
+    let fallbackDataUrl = null
+    let currentProfile = resolveInitialProfile()
+    const profileIndexMap = { bocchi: 0, miku: 0, default: 0, ray: 0 }
+    let carouselTimer = null
+
+    const loadDataUrl = async (fileName) => {
+      if (urlCache.has(fileName)) return urlCache.get(fileName)
+      try {
+        const r = await files.readDataUrl('data', fileName)
+        if (r && r.ok && r.url) {
+          if (!fileName.endsWith('.mp4')) {
+            const img = new Image()
+            img.src = r.url
+          }
+          urlCache.set(fileName, r.url)
+          return r.url
+        }
+      } catch {
+        // ignore
+      }
+      return null
+    }
+
+    const ensureFallbackUrl = async () => {
+      if (fallbackDataUrl) return fallbackDataUrl
+      const localBg = await loadDataUrl('bg.jpg')
+      fallbackDataUrl = localBg || FALLBACK_WALLPAPER_URL
+      return fallbackDataUrl
+    }
+
+    const ensureVideoEl = () => {
+      let v = document.getElementById(VIDEO_ID)
+      if (!v) {
+        v = document.createElement('video')
+        v.id = VIDEO_ID
+        v.autoplay = true
+        v.loop = true
+        v.muted = true
+        v.playsInline = true
+        v.setAttribute('aria-hidden', 'true')
+        v.style.cssText =
+          'position:fixed;inset:0;width:100vw;height:100vh;object-fit:cover;object-position:50% 35%;z-index:-1;pointer-events:none;opacity:0;transition:opacity 0.35s ease;'
+        document.body.prepend(v)
+      }
+      return v
+    }
+
+    const applySlide = (url, item) => {
+      if (cancelled) return
+      const root = document.documentElement
+      const isVideo = item?.type === 'video' || (item?.file && item.file.endsWith('.mp4'))
+      const size = item?.size || 'cover'
+      const position = item?.position || '50% 50%'
+      const bgColor = item?.bgColor || '#ffffff'
+
+      if (isVideo) {
+        const v = ensureVideoEl()
+        v.style.objectPosition = item?.position || '50% 35%'
+        if (v.src !== url) {
+          v.src = url
+        }
+        v.style.opacity = '1'
+        v.play().catch(() => {})
+        root.style.setProperty('--miku-bg-color', bgColor)
+        root.style.setProperty('--miku-bg-image', 'none')
+        root.style.setProperty('--miku-bg-animation', 'none')
+        return
+      }
+
+      const v = document.getElementById(VIDEO_ID)
+      if (v) {
+        v.style.opacity = '0'
+        try {
+          v.pause()
+        } catch {
+          // ignore
+        }
+      }
+
+      let anim = 'miku-window-drift 28s ease-in-out infinite alternate'
+      if (item?.drift === 'top') {
+        anim = 'miku-window-drift-top 28s ease-in-out infinite alternate'
+      } else if (item?.drift === 'none' || item?.drift === false) {
+        anim = 'none'
+      }
+      root.style.setProperty('--miku-bg-color', bgColor)
+      root.style.setProperty('--miku-bg-size', size)
+      root.style.setProperty('--miku-bg-position', position)
+      root.style.setProperty('--miku-bg-animation', anim)
+      root.style.setProperty('--miku-bg-image', `url("${url}")`)
+    }
+
+    const renderProfileSlide = async (profile, advance = false) => {
+      if (cancelled) return
+      const list = PROFILE_WALLPAPERS[profile] || PROFILE_WALLPAPERS.miku
+      if (!list || list.length === 0) {
+        const fb = await ensureFallbackUrl()
+        applySlide(fb, { size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' })
+        return
+      }
+      let idx = profileIndexMap[profile] ?? 0
+      if (advance && list.length > 1) {
+        idx = (idx + 1) % list.length
+        profileIndexMap[profile] = idx
+      } else {
+        idx = idx % list.length
+      }
+      const item = list[idx]
+      const url = await loadDataUrl(item.file)
+      if (url) {
+        applySlide(url, item)
+      } else {
+        const fb = await ensureFallbackUrl()
+        applySlide(fb, { size: 'cover', position: '50% 50%', bgColor: '#ffffff', drift: 'center' })
+      }
+    }
+
+    const setupCarouselTimer = (profile) => {
+      if (carouselTimer) {
+        clearInterval(carouselTimer)
+        carouselTimer = null
+      }
+      const list = PROFILE_WALLPAPERS[profile] || []
+      if (list.length > 1) {
+        // 后台预加载该 Bot 的全部轮播图，确保切图零延迟不闪烁
+        list.forEach((item) => {
+          loadDataUrl(item.file)
+        })
+        carouselTimer = setInterval(() => {
+          if (!cancelled) {
+            renderProfileSlide(currentProfile, true)
+          }
+        }, CAROUSEL_INTERVAL_MS)
+      }
+    }
+
+    const switchActiveProfile = (nextProfile) => {
+      const normalized = (nextProfile || '').trim() || 'miku'
+      if (normalized === currentProfile) return
+      currentProfile = normalized
+      renderProfileSlide(currentProfile, false)
+      setupCarouselTimer(currentProfile)
+    }
+
+    triggerNextWallpaperGlobal = () => {
+      renderProfileSlide(currentProfile, true)
+      setupCarouselTimer(currentProfile)
+    }
+
+    // 初始化加载当前 Bot 的壁纸与轮播
+    renderProfileSlide(currentProfile, false)
+    setupCarouselTimer(currentProfile)
+
+    // 预热波奇酱与初音未来的壁纸缓存，点击切换 Bot 时毫秒级瞬切
+    Object.values(PROFILE_WALLPAPERS).forEach((arr) => {
+      arr.forEach((item) => {
+        loadDataUrl(item.file)
+      })
+    })
+
+    // 监听侧边栏 Profile 切换与会话焦点切换，同时确保所有会话的 busy 模式强制同步为 steer（引导）
+    const steeredSessions = new Set()
+    const enforceSteerMode = () => {
+      try {
+        const sid = host.state.focusedSessionId?.get?.() || host.state.activeSessionId?.get?.()
+        if (sid && !steeredSessions.has(sid)) {
+          steeredSessions.add(sid)
+          host.request('config.set', { key: 'busy', value: 'steer', session_id: sid }).catch(() => {})
+        }
+      } catch {
+        // ignore
+      }
+    }
+    enforceSteerMode()
+
+    const unsubs = []
+    try {
+      if (host.state.profile?.subscribe) {
+        unsubs.push(
+          host.state.profile.subscribe(() => {
+            const p = host.state.profile?.get?.()
+            if (p) switchActiveProfile(p)
+            enforceSteerMode()
+          })
+        )
+      }
+      if (host.state.focusedSessionProfile?.subscribe) {
+        unsubs.push(
+          host.state.focusedSessionProfile.subscribe(() => {
+            const p = host.state.focusedSessionProfile?.get?.()
+            if (p) switchActiveProfile(p)
+            enforceSteerMode()
+          })
+        )
+      }
+      if (host.state.focusedSessionOwner?.subscribe) {
+        unsubs.push(
+          host.state.focusedSessionOwner.subscribe(() => {
+            const p = host.state.focusedSessionOwner?.get?.()?.profile
+            if (p) switchActiveProfile(p)
+            enforceSteerMode()
+          })
+        )
+      }
+      if (host.state.focusedSessionId?.subscribe) {
+        unsubs.push(
+          host.state.focusedSessionId.subscribe(() => {
+            const p =
+              host.state.focusedSessionProfile?.get?.() ||
+              host.state.focusedSessionOwner?.get?.()?.profile
+            if (p) switchActiveProfile(p)
+            enforceSteerMode()
+          })
+        )
+      }
+    } catch {
+      // ignore
+    }
+
     const onKeyDown = (e) => {
       // ⌘ + Shift + B (macOS) / Ctrl + Shift + B OR Option + B (Alt + KeyB)
       const isCmdShiftB = (e.metaKey || e.ctrlKey) && e.shiftKey && !e.altKey && (e.key === 'b' || e.key === 'B' || e.code === 'KeyB')
@@ -601,6 +882,14 @@ input::placeholder {
         e.preventDefault()
         e.stopPropagation()
         toggleCleanWallpaper()
+        return
+      }
+      // Option + N：手动切到当前 Bot 轮播的下一张壁纸
+      const isAltN = e.altKey && !e.metaKey && !e.ctrlKey && !e.shiftKey && e.code === 'KeyN'
+      if (isAltN) {
+        e.preventDefault()
+        e.stopPropagation()
+        triggerNextWallpaperGlobal()
         return
       }
       // 当处于纯享背景模式时，按 Esc 也能一键恢复界面
@@ -630,21 +919,18 @@ input::placeholder {
       setTimeout(checkAndMoveCwd, 150)
     })
 
-    files
-      .readDataUrl('data', 'bg.jpg')
-      .then((r) => {
-        if (r && r.ok && r.url) {
-          apply(r.url)
-        } else {
-          apply(FALLBACK_WALLPAPER_URL)
-        }
-      })
-      .catch(() => {
-        apply(FALLBACK_WALLPAPER_URL)
-      })
-
     return () => {
       cancelled = true
+      if (carouselTimer) {
+        clearInterval(carouselTimer)
+      }
+      unsubs.forEach((fn) => {
+        try {
+          fn?.()
+        } catch {
+          // ignore
+        }
+      })
       try {
         unsubBusy?.()
       } catch {
@@ -666,8 +952,8 @@ input::placeholder {
 
 export default {
   id: ID,
-  name: '初音未来动态背景',
-  description: 'Clean wallpaper shortcut (Cmd+Shift+B), always-on user bubble border, bold black thinking/tool rows.',
+  name: '多角色动态壁纸与轮播',
+  description: 'Per-bot wallpaper & carousel (bocchi 3-slide rotation, miku, default, ray), Cmd+Shift+B clean mode, Option+N next slide.',
   register(ctx) {
     ctx.register({
       id: 'miku-wallpaper-runner',
@@ -684,6 +970,17 @@ export default {
         category: '视图',
         shortcut: '⌘⇧B',
         run: toggleCleanWallpaper
+      }
+    })
+    ctx.register({
+      id: 'miku-wallpaper-next-cmd',
+      area: 'commandPalette',
+      data: {
+        id: 'miku-wallpaper.next-slide',
+        title: '壁纸轮播：切换到下一张壁纸',
+        category: '视图',
+        shortcut: '⌥N',
+        run: () => triggerNextWallpaperGlobal()
       }
     })
     ctx.register({
