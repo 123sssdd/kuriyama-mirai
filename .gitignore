@@ -8,3 +8,11 @@ stickers/**/*.gif
 stickers/**/*.webp
 stickers/index.json
 
+# 做卡工具链本地二进制字体与试跑样卡（二进制不进仓库）
+skills/card_making/scripts/fonts/
+skills/card_making/scripts/*.png
+telegram-briefing-example.png
+sample-card.png
+__pycache__/
+*.pyc
+
